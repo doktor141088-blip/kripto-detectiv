@@ -1,41 +1,37 @@
-[26/09/2026 19:32] Сарвиноз Рахмонова: <!DOCTYPE html>
+[26/09/2026 20:39] Сарвиноз Рахмонова: <!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kripto-Detektiv | Pro</title>
+    <title>CyberTrace Pro | Kiber-Detektiv</title>
     <style>
         body { background-color: #0d0208; color: #00ff41; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .terminal { background-color: #000; border: 2px solid #00ff41; box-shadow: 0 0 20px rgba(0, 255, 65, 0.5); width: 80%; max-width: 600px; padding: 20px; border-radius: 5px; position: relative; }
+        .terminal { background-color: #000; border: 2px solid #00ff41; box-shadow: 0 0 20px rgba(0, 255, 65, 0.5); width: 85%; max-width: 650px; padding: 25px; border-radius: 5px; }
         .header { text-align: center; border-bottom: 1px solid #00ff41; padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .story { margin-bottom: 20px; line-height: 1.5; min-height: 80px; }
-        .hint-box { color: #008f11; font-style: italic; margin-bottom: 15px; display: none; background: #051105; padding: 10px; border-left: 3px solid #00ff41; }
+        .story { margin-bottom: 20px; line-height: 1.6; min-height: 100px; font-size: 1.05em; }
+        .hint-box { color: #008f11; font-style: italic; margin-bottom: 15px; display: none; background: #051105; padding: 12px; border-left: 3px solid #00ff41; }
         .input-area { display: flex; gap: 10px; }
-        input { background: transparent; border: 1px solid #00ff41; color: #00ff41; padding: 8px; font-family: inherit; flex-grow: 1; outline: none; }
-        button { background: #00ff41; color: #000; border: none; padding: 8px 15px; font-family: inherit; cursor: pointer; font-weight: bold; }
+        input { background: transparent; border: 1px solid #00ff41; color: #00ff41; padding: 10px; font-family: inherit; flex-grow: 1; outline: none; font-size: 1em; }
+        button { background: #00ff41; color: #000; border: none; padding: 10px 18px; font-family: inherit; cursor: pointer; font-weight: bold; font-size: 1em; }
         button:hover { background: #008f11; color: #fff; }
         .btn-hint { background: #ffaa00; color: #000; }
         .btn-hint:hover { background: #b37700; }
-        .result { margin-top: 15px; font-weight: bold; min-height: 20px; }
-        .stats { font-size: 0.9em; color: #888; }
+        .result { margin-top: 15px; font-weight: bold; min-height: 25px; font-size: 1.1em; }
+        .stats { font-size: 0.95em; color: #888; }
     </style>
 </head>
 <body>
 
 <div class="terminal">
     <div class="header">
-        <h2 id="levelTitle">DARAJА 1: XAKER SERVERI</h2>
-        <div class="stats">Tandalar: <span id="coins">0</span> 🪙</div>
+        <h2 id="levelTitle">CYBERTRACE: BOSQICH 1</h2>
+        <div class="stats">Tangalar: <span id="coins">0</span> 🪙</div>
     </div>
-    <div class="story" id="storyText">
-        [TIZIM XABARI]: Anonim xaker bank tizimini buzdi. U o'z serverida parolni shifrlab qoldirgan.<br><br>
-        <b>Shifr:</b> "01010011 01000101 01000011 01010012 01000101 01010100"
-    </div>
-    
-    <div class="hint-box" id="hintText">Yordam: Bu ikkilik (binary) kod. Matnga o'girsangiz inglizcha "Siz saqlamoqchi bo'lgan maxfiylik" ma'nosidagi so'z chiqadi.</div>
+    <div class="story" id="storyText">Yuklanmoqda...</div>
+    <div class="hint-box" id="hintText"></div>
     
     <div class="input-area">
-        <input type="text" id="flagInput" placeholder="Parolni kiriting...">
+        <input type="text" id="flagInput" placeholder="Kodni (Flag) kiriting...">
         <button onclick="checkFlag()">YUBORISH</button>
         <button class="btn-hint" onclick="showHintWithAd()">YORDAM (REKLAMA)</button>
     </div>
@@ -43,54 +39,47 @@
 </div>
 
 <script>
-    // O'yin darajalari bazasi
     const levels = [
         {
-            title: "DARAJА 1: XAKER SERVERI",
-            story: "[TIZIM XABARI]: Anonim xaker bank tizimini buzdi. U o'z serverida parolni shifrlab qoldirgan.<br><br><b>Shifr:</b> '01010011 01000101 01000011 01010012 01000101 01010100'",
-            hint: "Yordam: Bu ikkilik (binary) kod. Uni matnga o'girsangiz inglizcha 'Maxfiylik' so'zi chiqadi.",
+            title: "CYBERTRACE: BOSQICH 1 (Xaker Serveri)",
+            story: "[TIZIM XABARI]: Anonim xaker bank tizimini buzdi. CyberTrace detektivi sifatida uning shifrlangan kodini yeching.<br><br><b>Shifr:</b> '01010011 01000101 01000011 01010012 01000101 01010100'",
+            hint: "Yordam: Bu ikkilik (binary) kod. Uni matnga o'girsangiz inglizcha 'Maxfiylik' so'zi chiqadi (SECRET).",
             answer: "SECRET"
         },
         {
-            title: "DARAJА 2: IP MANZILNI ANIQLASH",
-            story: "Ajoyib! Endi xakerning joylashgan manzilini topish kerak. U xabarda Sezar shifridan foydalangan (Harflar 1 ta oldinga surilgan).<br><br><b>Shifr:</b> 'B O D F I B Q O T T T'",
-            hint: "Yordam: Har bir harfni alifboda 1 ta harf orqaga qaytaring (A, B, C...). Masalan, B -> A bo'ladi.",
+            title: "CYBERTRACE: BOSQICH 2 (Sezar Shifri)",
+            story: "Ajoyib! Endi xaker qochib ketgan shaharni aniqlang. U harflarni ingliz alifbosida 1 ta harf oldinga surgun (A->B, B->C).<br><br><b>Shifr:</b> 'B O D F I B Q O T T T'",
+            hint: "Yordam: Har bir harfni alifboda 1 ta harf orqaga qaytaring (B->A, O->N...). Javob: ANCHORAGE",
             answer: "ANCHORAGE"
         },
         {
-            title: "DARAJА 3: REKLAMA VA PREMIUM BOSQICH",
-            story: "Siz xakerning maxfiy xonasi eshigiga keldingiz. Eshik elektron qulf bilan qulflangan. Kodni bilish uchun premium versiya yoki to'liq reklama ko'rish kerak.",
-            hint: "Yordam: Yandex Games yoki Google xizmatlarida shu yerda reklama ochiladi va kod bepul beriladi.",
+            title: "CYBERTRACE: BOSQICH 3 (Teskari Kod)",
+            story: "Xakerning IP-manzilini himoya qiluvchi xavfsizlik devori (Firewall) kalit so'zni teskari yozib qo'ygan.<br><br><b>Shifr:</b> 'RETUPMOCREPYS'",
+            hint: "Yordam: Matnni o'ngdan chapga qarab o'qing (Super...)",
+            answer: "SUPERCOMPUTER"
+        },
+        {
+            title: "CYBERTRACE: BOSQICH 4 (Morze Alifbosi)",
+            story: "Xakerning telefonidan maxfiy radio signal tutib olindi. Uni matnga o'giring.<br><br><b>Shifr:</b> '-.-. --- -.. .'",
+[26/09/2026 20:39] Сарвиноз Рахмонова: hint: "Yordam: Morze kodida .-.. (C), --- (O), -.. (D), . (E) harflari hisoblanadi. Javob: CODE",
+            answer: "CODE"
+        },
+        {
+            title: "CYBERTRACE: BOSQICH 5 (Kripto-Hamyon)",
+            story: "Xaker o'g'irlagan pullarni kiber-hamyonga o'tkazdi. Hamyon paroli inglizcha 'Muvaffaqiyat' so'zining bosh harflari katta bo'lgan shakli.",
+            hint: "Yordam: Ingliz tilida muvaffaqiyat 'SUCCESS' deb yoziladi.",
+            answer: "SUCCESS"
+        },
+        {
+            title: "CYBERTRACE: BOSQICH 6 (Yakuniy Blok)",
+            story: "Siz xaker bunkeriga kirdingiz! Markaziy serverni butkul o'chirish uchun 'Master Key' kodini kiriting.",
+            hint: "Yordam: Bu bosqich pullik yoki to'liq reklama orqali ochiladi. Kod: OPEN2026",
             answer: "OPEN2026"
         }
     ];
 
     let currentLevel = 0;
     let coins = 0;
-[26/09/2026 19:32] Сарвиноз Рахмонова: function checkFlag() {
-        const userInput = document.getElementById("flagInput").value.trim().toUpperCase();
-        const resultMessage = document.getElementById("resultMessage");
-
-        if (userInput === levels[currentLevel].answer) {
-            coins += 50;
-            document.getElementById("coins").innerText = coins;
-            resultMessage.style.color = "#00ff41";
-            resultMessage.innerHTML = "✓ TO'G'RI! Tizim yuklanmoqda...";
-            
-            setTimeout(() => {
-                currentLevel++;
-                if (currentLevel < levels.length) {
-                    loadLevel();
-                } else {
-                    resultMessage.innerHTML = "🎉 TABRIKLAYMIZ! Siz barcha kiber-jinoyatlarni fosh etdingiz va o'yinni tugatdingiz!";
-                    document.getElementById("flagInput").style.display = "none";
-                }
-            }, 2000);
-        } else {
-            resultMessage.style.color = "#ff0000";
-            resultMessage.innerHTML = "✗ XATO PAROL. Qayta urinib ko'ring.";
-        }
-    }
 
     function loadLevel() {
         document.getElementById("levelTitle").innerText = levels[currentLevel].title;
@@ -101,14 +90,40 @@
         document.getElementById("resultMessage").innerHTML = "";
     }
 
+    function checkFlag() {
+        const userInput = document.getElementById("flagInput").value.trim().toUpperCase();
+        const resultMessage = document.getElementById("resultMessage");
+
+        if (userInput === levels[currentLevel].answer) {
+            coins += 50;
+            document.getElementById("coins").innerText = coins;
+            resultMessage.style.color = "#00ff41";
+            resultMessage.innerHTML = "✓ TO'G'RI! Keyingi tarmoq kodi yuklanmoqda...";
+            
+            setTimeout(() => {
+                currentLevel++;
+                if (currentLevel < levels.length) {
+                    loadLevel();
+                } else {
+                    resultMessage.innerHTML = "🎉 SIZ G'ALABA QOZONDINGIZ! CyberTrace kiberxavfsizlik agentligi barcha jinoyatlarni fosh etdi!";
+                    document.getElementById("flagInput").style.display = "none";
+                }
+            }, 2000);
+        } else {
+            resultMessage.style.color = "#ff0000";
+            resultMessage.innerHTML = "✗ NOTO'G'RI KOD. Qayta tahlil qiling.";
+        }
+    }
+
     function showHintWithAd() {
-        // MONETIZATSIYA MODELI: Bu yerga kelajakda Yandex Ads yoki Google AdMob kodi ulanadi
-        alert("[REKLAMA SIMULYATSIYASI]: 5 soniyalik reklama ko'rsatilmoqda... (Kelajakda shu joyda sizga pul tushadi)");
-        
+        alert("[CYBERTRACE MONETIZATION]: Reklama ko'rsatilmoqda... (Kelajakda shu joyda sizga pul oqib keladi)");
         setTimeout(() => {
             document.getElementById("hintText").style.display = "block";
         }, 500);
     }
+
+    // O'yin boshlanishi
+    window.onload = loadLevel;
 </script>
 
 </body>
