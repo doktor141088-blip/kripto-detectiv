@@ -61,7 +61,7 @@
         {
             title: "CYBERTRACE: BOSQICH 4 (Morze Alifbosi)",
             story: "Xakerning telefonidan maxfiy radio signal tutib olindi. Uni matnga o'giring.<br><br><b>Shifr:</b> '-.-. --- -.. .'",
-[26/09/2026 22:22] Сарвиноз Рахмонова: hint: "Yordam: Morze kodida .-.. (C), --- (O), -.. (D), . (E) harflari hisoblanadi. Javob: CODE",
+            hint: "Yordam: Morze kodida .-.. (C), --- (O), -.. (D), . (E) harflari hisoblanadi. Javob: CODE",
             answer: "CODE"
         },
         {
@@ -82,14 +82,13 @@
     let coins = 0;
 
     function loadLevel() {
-        if (currentLevel < levels.length) {
+        if (document.getElementById("levelTitle")) {
             document.getElementById("levelTitle").innerText = levels[currentLevel].title;
             document.getElementById("storyText").innerHTML = levels[currentLevel].story;
             document.getElementById("hintText").innerText = levels[currentLevel].hint;
             document.getElementById("hintText").style.display = "none";
             document.getElementById("flagInput").value = "";
             document.getElementById("resultMessage").innerHTML = "";
-            document.getElementById("flagInput").style.display = "block";
         }
     }
 
