@@ -1,4 +1,4 @@
-[26/09/2026 20:39] Сарвиноз Рахмонова: <!DOCTYPE html>
+[26/09/2026 21:34] Сарвиноз Рахмонова: <!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
@@ -48,7 +48,7 @@
         },
         {
             title: "CYBERTRACE: BOSQICH 2 (Sezar Shifri)",
-            story: "Ajoyib! Endi xaker qochib ketgan shaharni aniqlang. U harflarni ingliz alifbosida 1 ta harf oldinga surgun (A->B, B->C).<br><br><b>Shifr:</b> 'B O D F I B Q O T T T'",
+            story: "Ajoyib! Endi xaker qochib ketgan shaharni aniqlang. U harflarni ingliz alifbosida 1 ta harf oldinga surgun (A->B, B->C).<br><br><b>Shifr:</b> 'B O D I P S B H F'",
             hint: "Yordam: Har bir harfni alifboda 1 ta harf orqaga qaytaring (B->A, O->N...). Javob: ANCHORAGE",
             answer: "ANCHORAGE"
         },
@@ -61,7 +61,7 @@
         {
             title: "CYBERTRACE: BOSQICH 4 (Morze Alifbosi)",
             story: "Xakerning telefonidan maxfiy radio signal tutib olindi. Uni matnga o'giring.<br><br><b>Shifr:</b> '-.-. --- -.. .'",
-[26/09/2026 20:39] Сарвиноз Рахмонова: hint: "Yordam: Morze kodida .-.. (C), --- (O), -.. (D), . (E) harflari hisoblanadi. Javob: CODE",
+[26/09/2026 21:34] Сарвиноз Рахмонова: hint: "Yordam: Morze kodida .-.. (C), --- (O), -.. (D), . (E) harflari hisoblanadi. Javob: CODE",
             answer: "CODE"
         },
         {
@@ -82,12 +82,15 @@
     let coins = 0;
 
     function loadLevel() {
-        document.getElementById("levelTitle").innerText = levels[currentLevel].title;
-        document.getElementById("storyText").innerHTML = levels[currentLevel].story;
-        document.getElementById("hintText").innerText = levels[currentLevel].hint;
-        document.getElementById("hintText").style.display = "none";
-        document.getElementById("flagInput").value = "";
-        document.getElementById("resultMessage").innerHTML = "";
+        if (currentLevel < levels.length) {
+            document.getElementById("levelTitle").innerText = levels[currentLevel].title;
+            document.getElementById("storyText").innerHTML = levels[currentLevel].story;
+            document.getElementById("hintText").innerText = levels[currentLevel].hint;
+            document.getElementById("hintText").style.display = "none";
+            document.getElementById("flagInput").value = "";
+            document.getElementById("resultMessage").innerHTML = "";
+            document.getElementById("flagInput").style.display = "block";
+        }
     }
 
     function checkFlag() {
@@ -116,14 +119,20 @@
     }
 
     function showHintWithAd() {
-        alert("[CYBERTRACE MONETIZATION]: Reklama ko'rsatilmoqda... (Kelajakda shu joyda sizga pul oqib keladi)");
+        const resultMessage = document.getElementById("resultMessage");
+        resultMessage.style.color = "#ffaa00";
+        resultMessage.innerHTML = "⏳ Reklama yuklanmoqda...";
+        
         setTimeout(() => {
             document.getElementById("hintText").style.display = "block";
-        }, 500);
+            resultMessage.innerHTML = "";
+        }, 1000);
     }
 
-    // O'yin boshlanishi
-    window.onload = loadLevel;
+    // Android APK (WebView) uchun eng ishonchli ishga tushirish usuli
+    document.addEventListener("DOMContentLoaded", function() {
+        loadLevel();
+    });
 </script>
 
 </body>
