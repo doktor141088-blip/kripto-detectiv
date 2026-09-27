@@ -1,0 +1,141 @@
+ <!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberTrace Pro | Kiber-Detektiv</title>
+    <style>
+        body { background-color: #0d0208; color: #00ff41; font-family: monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .terminal { background-color: #000; border: 2px solid #00ff41; box-shadow: 0 0 20px rgba(0, 255, 65, 0.5); width: 85%; max-width: 650px; padding: 25px; border-radius: 5px; position: relative; }
+        .header { text-align: center; border-bottom: 1px solid #00ff41; padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .story { margin-bottom: 20px; line-height: 1.6; min-height: 120px; font-size: 1.05em; }
+        .hacker-chat { color: #ff0055; font-weight: bold; background: #1a0008; padding: 10px; border-left: 3px solid #ff0055; margin-bottom: 15px; font-size: 0.95em; min-height: 25px; }
+        .hint-box { color: #008f11; font-style: italic; margin-bottom: 15px; display: none; background: #051105; padding: 12px; border-left: 3px solid #00ff41; }
+        .input-area { display: flex; gap: 10px; }
+        input { background: transparent; border: 1px solid #00ff41; color: #00ff41; padding: 10px; font-family: inherit; flex-grow: 1; outline: none; font-size: 1em; }
+        button { background: #00ff41; color: #000; border: none; padding: 10px 18px; font-family: inherit; cursor: pointer; font-weight: bold; font-size: 1em; }
+        button:hover { background: #008f11; color: #fff; }
+        .btn-hint { background: #ffaa00; color: #000; }
+        .result { margin-top: 15px; font-weight: bold; min-height: 25px; font-size: 1.1em; }
+        .stats { font-size: 0.95em; color: #888; display: flex; gap: 15px; }
+        #timer { color: #ff0000; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="terminal">
+    <div class="header">
+        <h2 id="levelTitle">CYBERTRACE: BOSQICH 1</h2>
+        <div class="stats">
+            <div>Vaqt: <span id="timer">90</span>s ⏳</div>
+            <div>Tangalar: <span id="coins">0</span> 🪙</div>
+        </div>
+    </div>
+    <div class="hacker-chat" id="hackerText">[XAKER]: Tizimga kirdingiz deb o'ylayapsizmi?</div>
+    <div class="story" id="storyText">Yuklanmoqda...</div>
+    <div class="hint-box" id="hintText"></div>
+    <div class="input-area" id="controlArea">
+        <input type="text" id="flagInput" placeholder="Kodni kiriting...">
+        <button onclick="checkFlag()">YUBORISH</button>
+        <button class="btn-hint" onclick="showHintWithAd()">YORDAM</button>
+    </div>
+    <div class="result" id="resultMessage"></div>
+</div>
+<script>
+    const levels = [
+        {
+            title: "CYBERTRACE: BOSQICH 1 (Xaker Serveri)",
+            story: "[TIZIM XABARI]: Anonim xaker bank tizimini buzdi. Shifrlangan kodini yeching.<br><br><b>Shifr:</b> '01010011 01000101 01000011 01010012 01000101 01010100'",
+            hint: "Yordam: Tarjimasi inglizcha 'SECRET' so'zi.",
+            answer: "SECRET",
+            hacker: "[XAKER]: Tizimga kirdingiz deb o'ylayapsizmi? Tez orada hammasini o'chiraman!"
+        },
+        {
+            title: "CYBERTRACE: BOSQICH 2 (Sezar Shifri)",
+            story: "Endi xaker qochib ketgan shaharni aniqlang. Harflar 1 ta oldinga surilgan.<br><br><b>Shifr:</b> 'B O D I P S B H F'",
+            hint: "Yordam: Har bir harfni alifboda 1 ta orqaga qaytaring. Javob: ANCHORAGE",
+            answer: "ANCHORAGE",
+            hacker: "[XAKER]: Oxirgi manzilimni hech qachon topa olmaysiz!"
+        },
+        {
+            title: "CYBERTRACE: BOSQICH 3 (Teskari Kod)",
+            story: "Xavfsizlik devori kalit so'zni teskari yozib qo'ygan.<br><br><b>Shifr:</b> 'RETUPMOCREPYS'",
+            hint: "Yordam: Matnni o'ngdan chapga qarab o'qing. Javob: SUPERCOMPUTER",
+            answer: "SUPERCOMPUTER",
+            hacker: "[XAKER]: Firewall devorim siz uchun juda mustahkamlik qiladi!"
+        }
+    ];
+    let currentLevel = 0;
+    let coins = 0;
+    let timeLeft = 90;
+    let timerInterval;
+
+    function startTimer() {
+        clearInterval(timerInterval);
+        timeLeft = 90;
+        document.getElementById("timer").innerText = timeLeft;
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById("timer").innerText = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                gameOver();
+            }
+        }, 1000);
+    }
+
+    function gameOver() {
+        document.getElementById("resultMessage").style.color = "#ff0000";
+        document.getElementById("resultMessage").innerHTML = "🚨 VAQT TUGADI! O'yin tugadi.";
+        document.getElementById("controlArea").style.display = "none";
+    }
+
+    function loadLevel() {
+        if (currentLevel < levels.length) {
+            document.getElementById("levelTitle").innerText = levels[currentLevel].title;
+            document.getElementById("storyText").innerHTML = levels[currentLevel].story;
+            document.getElementById("hintText").innerText = levels[currentLevel].hint;
+            document.getElementById("hackerText").innerText = levels[currentLevel].hacker;
+            document.getElementById("hintText").style.display = "none";
+            document.getElementById("flagInput").value = "";
+            document.getElementById("resultMessage").innerHTML = "";
+            startTimer();
+        }
+    }
+
+    function checkFlag() {
+        const userInput = document.getElementById("flagInput").value.trim().toUpperCase();
+        const resultMessage = document.getElementById("resultMessage");
+
+        if (userInput === levels[currentLevel].answer) {
+            clearInterval(timerInterval);
+            coins += 50;
+            document.getElementById("coins").innerText = coins;
+            resultMessage.style.color = "#00ff41";
+            resultMessage.innerHTML = "✓ TO'G'RI! Yuklanmoqda...";
+            
+            setTimeout(() => {
+                currentLevel++;
+                if (currentLevel < levels.length) {
+                    loadLevel();
+                } else {
+                    resultMessage.innerHTML = "🎉 SIZ G'ALABA QOZONDINGIZ!";
+                    document.getElementById("controlArea").style.display = "none";
+                    document.getElementById("hackerText").innerText = "[XAKER]: Mag'lub bo'ldim...";
+                    document.getElementById("hackerText").style.color = "#00ff41";
+                }
+            }, 2000);
+        } else {
+            resultMessage.style.color = "#ff0000";
+            resultMessage.innerHTML = "✗ NOTO'G'RI KOD.";
+        }
+    }
+
+    function showHintWithAd() {
+        alert("[REKLAMA]: Yordam ko'rsatilmoqda...");
+        document.getElementById("hintText").style.display = "block";
+    }
+
+    window.onload = loadLevel;
+</script>
+</body>
+</html>
