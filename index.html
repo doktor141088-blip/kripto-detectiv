@@ -1,6 +1,8 @@
  <!DOCTYPE html>
 <html lang="uz">
 <head>
+ <script src="https://yandex.ru"></script>
+ 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyberTrace Pro | Kiber-Detektiv</title>
@@ -173,12 +175,31 @@
             resultMessage.innerHTML = "✗ NOTO'G'RI KOD.";
         }
     }
-
-    function showHintWithAd() {
-        alert("[REKLAMA]: Yordam ko'rsatilmoqda...");
+function showHintWithAd() {
+    if (typeof YaGames !== 'undefined') {
+        YaGames.init().then(ysdk => {
+            ysdk.adv.showRewardedVideo({
+                callbacks: {
+                    onOpen: () => { console.log('Video ad opened.'); },
+                    onRewarded: () => {
+                        // Siz yaratgan Blok ID orqali yordam matnini ochish
+                        document.getElementById("hintText").style.display = "block";
+                    },
+                    onClose: () => { console.log('Video ad closed.'); },
+                    onError: (e) => {
+                        console.log('Error showing ad:', e);
+                        document.getElementById("hintText").style.display = "block";
+                    }
+                }
+            });
+        });
+    } else {
+        // Agar Yandex tarmog'idan tashqarida (masalan brauzerda) ochilsa test rejimi
+        alert("[CyberTrace]: Reklama yuklanmoqda... (ID: R-M-20124213-1)");
         document.getElementById("hintText").style.display = "block";
     }
-
+}
+    
     window.onload = loadLevel;
 </script>
 </body>
